@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   form: {
     alignItems: 'center',
     width: '90%',
-    height: '40%',
+    height: 'auto',
     padding: 20,
     borderRadius: 20,
     marginHorizontal: 40,
