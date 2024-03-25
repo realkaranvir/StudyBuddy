@@ -36,7 +36,7 @@ const AssignmentList = () => {
         <View style={styles.modal}>
           <AddAssignment/>
           <TouchableOpacity style={styles.button} onPress={()=>setModalVisible(false)}>
-            <Text>Close</Text>
+            <Text>Done</Text>
           </TouchableOpacity>
         </View>
       </Modal>

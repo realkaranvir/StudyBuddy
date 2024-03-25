@@ -22,7 +22,7 @@ const AddAssignment = () => {
       <TextInput
         style={styles.input}
         value={title}
-        onChangeText={text => setName(text)}
+        onChangeText={text => setTitle(text)}
         placeholder="Enter Assignment Title"
       />
       <Text style={styles.label}>Subject:</Text>
