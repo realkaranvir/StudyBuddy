@@ -33,7 +33,34 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.5)'
-  }
+  },
+  form: {
+    alignItems: 'center',
+    width: '90%',
+    height: '60%',
+    padding: 20,
+    borderRadius: 20,
+    marginHorizontal: 40,
+    marginBottom: 10,
+    backgroundColor: 'white',
+  },
+  label: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  input: {
+    width: '100%',
+    height: 40,
+    borderColor: 'lightgray',
+    borderWidth: 1,
+    borderRadius: 15,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+  },
+  messageInput: {
+    height: 100,
+    textAlignVertical: 'top',
+  },
 });
 
 export default styles;

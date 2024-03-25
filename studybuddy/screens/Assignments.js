@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet, ScrollView } from 'react-native';
-import AssignmentList from '../components/AssignmentList.js'
+import AssignmentList from '../components/AssignmentList.js';
 
 const AssignmentsScreen = () => {
   return (

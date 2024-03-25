@@ -7,10 +7,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faHome, faGear, faListUl, faBook } from '@fortawesome/free-solid-svg-icons';
 
-import Home from './screens/Home.js'
-import Settings from './screens/Settings.js'
-import Assignments from './screens/Assignments.js'
-import Study from './screens/Study.js'
+import Home from './screens/Home.js';
+import Settings from './screens/Settings.js';
+import Assignments from './screens/Assignments.js';
+import Study from './screens/Study.js';
 
 const Tab = createBottomTabNavigator();
 

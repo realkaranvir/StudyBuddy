@@ -1,5 +1,6 @@
 import { React, useState } from 'react';
-import styles from '../styles.js'
+import styles from '../styles.js';
+import AddAssignment from './AddAssignment.js';
 import {
   View,
   Text,
@@ -15,7 +16,7 @@ const data = [
   {key: 'HW2'}
 ];
 
-const AssignmentScreen = () => {
+const AssignmentList = () => {
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <View style={styles.container}>
@@ -28,11 +29,12 @@ const AssignmentScreen = () => {
 
       <Modal
         transparent={true}
-        animationType="slide"
+        animationType="fade"
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
       >
         <View style={styles.modal}>
+          <AddAssignment/>
           <TouchableOpacity style={styles.button} onPress={()=>setModalVisible(false)}>
             <Text>Close</Text>
           </TouchableOpacity>
@@ -45,4 +47,4 @@ const AssignmentScreen = () => {
 
 
 
-export default AssignmentScreen;
+export default AssignmentList;
