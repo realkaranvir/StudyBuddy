@@ -15,10 +15,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgrey',
     borderRadius: 20,
   },
+  title: {
+    paddingHorizontal: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
   text: {
     paddingHorizontal: 10,
-    paddingTop: 10,
-    width: '100%',
+    paddingTop: 5,
+    paddingBottom: 5,
   },
   button: {
     alignItems: 'center',
@@ -37,7 +44,7 @@ const styles = StyleSheet.create({
   form: {
     alignItems: 'center',
     width: '90%',
-    height: '60%',
+    height: '40%',
     padding: 20,
     borderRadius: 20,
     marginHorizontal: 40,
@@ -60,6 +67,20 @@ const styles = StyleSheet.create({
   messageInput: {
     height: 100,
     textAlignVertical: 'top',
+  },
+  itemContainer: {
+    padding: 10,
+    margin: 5,
+    borderRadius: 20,
+    backgroundColor: 'lightgray',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });
 
