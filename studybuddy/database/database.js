@@ -60,8 +60,8 @@ export const removeTable = async (db, tableName) => {
 
 export const addAssignment = async (db, assignment) => {
   const insertQuery = `
-   INSERT INTO assignments (title, subject, dueDate)
-   VALUES (?, ?, ?)
+    INSERT INTO assignments (title, subject, dueDate)
+    VALUES (?, ?, ?)
  `;
   const values = [
     assignment.title,
@@ -75,6 +75,39 @@ export const addAssignment = async (db, assignment) => {
     throw Error("Failed to add assignment");
   }
 };
+
+export const editAssignment = async (db, assignment) => {
+  const updateQuery = `
+    UPDATE assignments
+    SET title = ?, subject = ?, dueDate = ?
+    WHERE id = ?
+  `;
+  console.log(assignment.title);
+  const values = [assignment.title, assignment.subject, assignment.dueDate, assignment.id];
+  try {
+    return db.executeSql(updateQuery, values);
+  } catch (error) {
+    console.error(error);
+    throw Error("Failed to edit assignment");
+  }
+};
+
+export const deleteAssignment = async (db, assignment) => {
+  const deleteQuery = `
+    DELETE FROM assignments
+    WHERE id = ?
+  `;
+  try {
+    const result = await db.executeSql(deleteQuery, [assignment.id]);
+    console.log('assignment successfully deleted');
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw Error("Failed to delete assignment");
+  }
+};
+
+
 
 export const getAssignments = async (db) => {
   try {
