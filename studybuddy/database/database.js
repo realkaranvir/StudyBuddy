@@ -82,7 +82,6 @@ export const editAssignment = async (db, assignment) => {
     SET title = ?, subject = ?, dueDate = ?
     WHERE id = ?
   `;
-  console.log(assignment.title);
   const values = [assignment.title, assignment.subject, assignment.dueDate, assignment.id];
   try {
     return db.executeSql(updateQuery, values);

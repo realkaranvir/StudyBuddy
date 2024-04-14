@@ -2,12 +2,13 @@ import React from 'react';
 import { View, Text, Button, StyleSheet, ScrollView } from 'react-native';
 import AssignmentList from '../components/AssignmentList.js';
 
-const AssignmentsScreen = ({ route }) => {
-  const { db } = route.params;
+const AssignmentsScreen = () => {
+
+  
 
   return (
     <View style={styles.container}>
-        <AssignmentList db={db} />
+        <AssignmentList/>
 
     </View>
   );

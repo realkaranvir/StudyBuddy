@@ -1,6 +1,5 @@
 import { React, useEffect, useState } from 'react';
 import { View, Text, SafeAreaView } from 'react-native';
-import { createTables, initDB } from './database/database.js'
 
 import { NavigationContainer} from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -16,32 +15,6 @@ import Study from './screens/Study.js';
 const Tab = createBottomTabNavigator();
 
 function App() {
-  [db, setDB] = useState(null);
-
-  useEffect(() => {
-    const setup = async() => {
-      database = await initDB();
-      if(database) {
-        createTables(database);
-        setDB(database);
-        return database;
-      }
-    }
-    setup();
-  }, []);
-
-  if (!db) {
-    
-    return (
-      <View>
-        <Text>Loading</Text>
-      </View>
-    );
-  }
-
-
-
-
   return (
     <NavigationContainer>
       <Tab.Navigator>
@@ -66,7 +39,6 @@ function App() {
         <Tab.Screen
           name="Assignments"
           component={Assignments}
-          initialParams={{ db: db }}
           options={{
             tabBarIcon: ({ color, size }) => (
               <FontAwesomeIcon icon={faListUl} color={color} size={size} />

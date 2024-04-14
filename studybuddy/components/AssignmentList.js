@@ -1,6 +1,14 @@
-import { React, useState, useEffect } from 'react';
+import {React, useState, useEffect} from 'react';
 import styles from '../styles.js';
-import { addAssignment, getAssignments, editAssignment, deleteAssignment } from '../database/database.js'
+import {
+  initDB,
+  createTables,
+  addAssignment,
+  getAssignments,
+  editAssignment,
+  deleteAssignment,
+} from '../database/database.js';
+
 import {
   View,
   Text,
@@ -12,8 +20,7 @@ import {
   TextInput,
 } from 'react-native';
 
-
-const AssignmentList = ({ db }) => {
+const AssignmentList = () => {
   const [assignments, setAssignments] = useState('');
   const [addAssignmentVisible, setAddAssignmentVisible] = useState(false);
   const [editAssignmentVisible, setEditAssignmentVisible] = useState(false);
@@ -21,19 +28,35 @@ const AssignmentList = ({ db }) => {
   const [subject, setSubject] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [currentAssignment, setCurrentAssignment] = useState('');
+  const [db, setDB] = useState(null);
+
+  useEffect(() => {
+    //setup database if doesn't exist
+    const setup = async () => {
+      const database = await initDB();
+      if (database) {
+        createTables(database);
+        setDB(database);
+        return database;
+      }
+    };
+    setup();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       const assignmentsData = await getAssignments(db);
-      console.log(assignmentsData);
       setAssignments(assignmentsData);
     };
-    fetchData();
-  }, [addAssignmentVisible, editAssignmentVisible]);
+    if (db) {
+      //Only fetch data if the database isn't null
+      fetchData();
+    }
+  }, [addAssignmentVisible, editAssignmentVisible, db]);
 
-  const handleSubmit = async (mode) => {
+  const handleSubmit = async mode => {
     if (mode === 0) {
-      await addAssignment(db, { title, subject, dueDate });
+      await addAssignment(db, {title, subject, dueDate});
     } else if (mode === 1) {
       currentAssignment.title = title;
       currentAssignment.subject = subject;
@@ -49,13 +72,13 @@ const AssignmentList = ({ db }) => {
     setDueDate('');
   };
 
-  const modifyAssignment = (assignment) => {
+  const modifyAssignment = assignment => {
     setEditAssignmentVisible(true);
     setCurrentAssignment(assignment);
     setTitle(assignment.title);
     setSubject(assignment.subject);
     setDueDate(assignment.dueDate);
-  }
+  };
 
   const closeEditModal = () => {
     setEditAssignmentVisible(false);
@@ -64,17 +87,14 @@ const AssignmentList = ({ db }) => {
     setDueDate('');
   };
 
-
-
-
   return (
     <View style={styles.container}>
       <FlatList
         style={styles.listContainer}
         data={assignments}
-        renderItem={({ item }) => (
+        renderItem={({item}) => (
           <TouchableOpacity onPress={() => modifyAssignment(item)}>
-            <View style={styles.itemContainer} backgroundColor={"white"}>
+            <View style={{margin: '0.5%'}} backgroundColor={'white'}>
               <Text style={styles.title}>{item.title}</Text>
               <Text style={styles.text}>{item.subject}</Text>
               <Text style={styles.text}>Due: {item.dueDate}</Text>
@@ -83,7 +103,9 @@ const AssignmentList = ({ db }) => {
         )}
         keyExtractor={(item, index) => index.toString()}
       />
-      <TouchableOpacity style={styles.button} onPress={()=>setAddAssignmentVisible(true)}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => setAddAssignmentVisible(true)}>
         <Text>Add Assignment</Text>
       </TouchableOpacity>
 
@@ -91,8 +113,7 @@ const AssignmentList = ({ db }) => {
         transparent={true}
         animationType="fade"
         visible={addAssignmentVisible}
-        onRequestClose={() => setAddAssignmentVisible(false)}
-      >
+        onRequestClose={() => setAddAssignmentVisible(false)}>
         <View style={styles.modal}>
           <View style={styles.form}>
             <Text style={styles.label}>Assignment Title:</Text>
@@ -117,12 +138,16 @@ const AssignmentList = ({ db }) => {
               placeholder="Enter Due Date"
               multiline
             />
-            <TouchableOpacity style={styles.button} onPress={()=>handleSubmit(0)}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => handleSubmit(0)}>
               <Text>Add Assignment</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.greenButton} onPress={()=>setAddAssignmentVisible(false)}>
-            <Text>Close</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.greenButton}
+              onPress={() => setAddAssignmentVisible(false)}>
+              <Text>Close</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -131,8 +156,7 @@ const AssignmentList = ({ db }) => {
         transparent={true}
         animationType="fade"
         visible={editAssignmentVisible}
-        onRequestClose={() => closeEditModal()}
-      >
+        onRequestClose={() => closeEditModal()}>
         <View style={styles.modal}>
           <View style={styles.form}>
             <Text style={styles.label}>Assignment Title:</Text>
@@ -157,23 +181,26 @@ const AssignmentList = ({ db }) => {
               placeholder="Enter Due Date"
               multiline
             />
-            <TouchableOpacity style={styles.button} onPress={()=>handleSubmit(1)}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => handleSubmit(1)}>
               <Text>Save Assignment</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.redButton} onPress={()=>handleSubmit(2)}>
+            <TouchableOpacity
+              style={styles.redButton}
+              onPress={() => handleSubmit(2)}>
               <Text>Delete Assignment</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.greenButton} onPress={()=>closeEditModal()}>
-            <Text>Cancel</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.greenButton}
+              onPress={() => closeEditModal()}>
+              <Text>Cancel</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
     </View>
   );
 };
-
-
-
 
 export default AssignmentList;
