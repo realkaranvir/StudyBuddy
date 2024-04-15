@@ -6,13 +6,13 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#222',
   },
   listContainer: {
     margin: 10,
     padding: 10,
     width: '90%',
-    backgroundColor: 'lightgrey',
+    backgroundColor: '#444',
     borderRadius: 5,
   },
   title: {
@@ -21,11 +21,13 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     fontWeight: 'bold',
     fontSize: 20,
+    color: 'white',
   },
   text: {
     paddingHorizontal: 10,
     paddingTop: 5,
     paddingBottom: 5,
+    color: 'white',
   },
   button: {
     alignItems: 'center',
@@ -75,7 +77,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.8)'
+    backgroundColor: 'rgba(0,0,0,0.8)',
   },
   form: {
     alignItems: 'center',
@@ -85,11 +87,12 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     marginHorizontal: 40,
     marginBottom: 10,
-    backgroundColor: 'white',
+    backgroundColor: '#333',
   },
   label: {
     fontSize: 16,
     marginBottom: 5,
+    color: 'white'
   },
   input: {
     width: '100%',
@@ -120,6 +123,7 @@ const styles = StyleSheet.create({
   },
   horizontalContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
   },
 });

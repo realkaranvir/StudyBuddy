@@ -30,6 +30,13 @@ const StudyScreen = () => {
   useEffect(() => {
     const fetchData = async () => {
       const assignmentsData = await getAssignments(db);
+      assignmentsData.sort((a, b) => {
+        // Convert the dueDate strings to Date objects for comparison
+        const dateA = new Date(a.dueDate);
+        const dateB = new Date(b.dueDate);
+        // Compare the dates
+        return dateA - dateB;
+      });
       setAssignments(assignmentsData);
     };
     if (db) {
@@ -76,7 +83,7 @@ const StudyScreen = () => {
             {/* If the item has been added to the interleave, change color of touchable opacity*/}
             <View style={[{margin: '0.5%'}, 
             interleave.some(existingItem => existingItem.id === item.id) ? 
-            ({ backgroundColor: 'crimson'}) : ({backgroundColor: 'white'})]}>
+            ({ backgroundColor: 'crimson'}) : ({backgroundColor: '#222'})]}>
               <Text style={styles.text}>{item.title}</Text>
               <Text style={styles.text}>{item.subject}</Text>
               

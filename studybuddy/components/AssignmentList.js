@@ -1,14 +1,4 @@
-import {React, useState, useEffect} from 'react';
-import styles from '../styles.js';
-import {
-  initDB,
-  createTables,
-  addAssignment,
-  getAssignments,
-  editAssignment,
-  deleteAssignment,
-} from '../database/database.js';
-
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -19,6 +9,17 @@ import {
   Modal,
   TextInput,
 } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { useFocusEffect } from '@react-navigation/native';
+import styles from '../styles.js';
+import {
+  initDB,
+  createTables,
+  addAssignment,
+  getAssignments,
+  editAssignment,
+  deleteAssignment,
+} from '../database/database.js';
 
 const AssignmentList = () => {
   const [assignments, setAssignments] = useState('');
@@ -26,12 +27,25 @@ const AssignmentList = () => {
   const [editAssignmentVisible, setEditAssignmentVisible] = useState(false);
   const [title, setTitle] = useState('');
   const [subject, setSubject] = useState('');
-  const [dueDate, setDueDate] = useState('');
+  const [dueDate, setDueDate] = useState(new Date()); // Initialize with current date
   const [currentAssignment, setCurrentAssignment] = useState('');
+  const [refresh, setRefresh] = useState(false);
   const [db, setDB] = useState(null);
 
+
+  useFocusEffect(
+    //Makes the assignment data refresh
+    useCallback(() => {
+      // Set refresh to true whenever the screen becomes focused
+      setRefresh(true);
+      return () => {
+        // Clean-up function to reset refresh state when screen loses focus
+        setRefresh(false);
+      };
+    }, [])
+  );
+
   useEffect(() => {
-    //setup database if doesn't exist
     const setup = async () => {
       const database = await initDB();
       if (database) {
@@ -49,14 +63,13 @@ const AssignmentList = () => {
       setAssignments(assignmentsData);
     };
     if (db) {
-      //Only fetch data if the database isn't null
       fetchData();
     }
-  }, [addAssignmentVisible, editAssignmentVisible, db]);
+  }, [addAssignmentVisible, editAssignmentVisible, db, refresh]);
 
   const handleSubmit = async mode => {
     if (mode === 0) {
-      await addAssignment(db, {title, subject, dueDate});
+      await addAssignment(db, { title, subject, dueDate });
     } else if (mode === 1) {
       currentAssignment.title = title;
       currentAssignment.subject = subject;
@@ -69,7 +82,7 @@ const AssignmentList = () => {
     }
     setTitle('');
     setSubject('');
-    setDueDate('');
+    setDueDate(new Date());
   };
 
   const modifyAssignment = assignment => {
@@ -77,14 +90,23 @@ const AssignmentList = () => {
     setCurrentAssignment(assignment);
     setTitle(assignment.title);
     setSubject(assignment.subject);
-    setDueDate(assignment.dueDate);
+    setDueDate(new Date(assignment.dueDate));
   };
 
   const closeEditModal = () => {
     setEditAssignmentVisible(false);
     setTitle('');
     setSubject('');
-    setDueDate('');
+    setDueDate(new Date());
+  };
+
+  const handleDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || dueDate;
+    setDueDate(currentDate);
+  };
+
+  const convertToDate = (dateString) => {
+    return new Date(dateString);
   };
 
   return (
@@ -92,12 +114,12 @@ const AssignmentList = () => {
       <FlatList
         style={styles.listContainer}
         data={assignments}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <TouchableOpacity onPress={() => modifyAssignment(item)}>
-            <View style={{margin: '0.5%'}} backgroundColor={'white'}>
+            <View style={{ margin: '0.5%' }} backgroundColor={'#222'}>
               <Text style={styles.title}>{item.title}</Text>
               <Text style={styles.text}>{item.subject}</Text>
-              <Text style={styles.text}>Due: {item.dueDate}</Text>
+              <Text style={styles.text}>Due: {convertToDate(item.dueDate).toLocaleDateString()}</Text>
             </View>
           </TouchableOpacity>
         )}
@@ -130,14 +152,15 @@ const AssignmentList = () => {
               onChangeText={text => setSubject(text)}
               placeholder="Enter Subject"
             />
+            <View style={styles.horizontalContainer}>
             <Text style={styles.label}>Due Date:</Text>
-            <TextInput
-              style={[styles.input, styles.messageInput]}
-              value={dueDate}
-              onChangeText={text => setDueDate(text)}
-              placeholder="Enter Due Date"
-              multiline
+            <DateTimePicker
+                value={dueDate}
+                mode="date"
+                display="calendar"
+                onChange={handleDateChange}
             />
+            </View>
             <TouchableOpacity
               style={styles.button}
               onPress={() => handleSubmit(0)}>
@@ -173,14 +196,15 @@ const AssignmentList = () => {
               onChangeText={text => setSubject(text)}
               placeholder="Enter Subject"
             />
+            <View style={styles.horizontalContainer}>
             <Text style={styles.label}>Due Date:</Text>
-            <TextInput
-              style={[styles.input, styles.messageInput]}
-              value={dueDate}
-              onChangeText={text => setDueDate(text)}
-              placeholder="Enter Due Date"
-              multiline
+            <DateTimePicker
+                value={dueDate}
+                mode="date"
+                display="calendar"
+                onChange={handleDateChange}
             />
+            </View>
             <TouchableOpacity
               style={styles.button}
               onPress={() => handleSubmit(1)}>

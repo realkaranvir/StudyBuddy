@@ -11,13 +11,30 @@ import Home from './screens/Home.js';
 import Settings from './screens/Settings.js';
 import Assignments from './screens/Assignments.js';
 import Study from './screens/Study.js';
+import styles from './styles.js';
 
 const Tab = createBottomTabNavigator();
 
 function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
+      <Tab.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#222',
+        },
+        headerTitleStyle: {
+          color: 'white',
+        },
+        tabBarStyle: {
+          backgroundColor: '#222',
+          borderTopWidth: 0,
+          paddingBottom: 5,
+          height: 60,
+        },
+
+      }}
+      >
       <Tab.Screen
         name="Home"
         component={Home}
